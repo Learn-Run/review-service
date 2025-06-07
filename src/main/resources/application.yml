@@ -1,0 +1,23 @@
+server:
+  port: 0
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    client:
+      register-with-eureka: true
+      fetch-registry: true
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+
+spring:
+  application:
+    name: profile-service
+  profiles:
+    active: prod
+
+logging:
+  level:
+    root: info

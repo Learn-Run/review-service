@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      uri: ${MONGODB_URI_REVIEW}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-service:8761/eureka
