@@ -14,7 +14,7 @@ springdoc:
 
 spring:
   application:
-    name: profile-service
+    name: review-service
   profiles:
     active: prod
 
