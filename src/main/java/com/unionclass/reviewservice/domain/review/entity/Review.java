@@ -24,7 +24,7 @@ public class Review {
     // 리뷰 대상자 UUID
     private String revieweeUuid;
 
-    private String rating;
+    private Double rating;
     private String contents;
     private Post post;
     private List<Image> imageList;
@@ -34,7 +34,7 @@ public class Review {
 
     @Builder
     public Review(
-            String id, String reviewerUuid, String revieweeUuid, String rating,
+            String id, String reviewerUuid, String revieweeUuid, Double rating,
             String contents, Post post, List<Image> imageList, boolean deletedStatus, LocalDateTime deletedAt
     ) {
         this.id = id;

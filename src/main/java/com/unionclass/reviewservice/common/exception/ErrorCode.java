@@ -28,7 +28,11 @@ public enum ErrorCode {
     /**
      * 800 ~ 899 : internal server error
      */
+    LOCK_ACQUISITION_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, false, 800, "락 획득에 실패하였습니다."),
+    FEIGN_CLIENT_ERROR(HttpStatus.BAD_GATEWAY, false, 801, "마이크로 서비스 간의 통신에 실패하였습니다."),
+    POST_SERVICE_COMMUNICATION_FAILED(HttpStatus.BAD_GATEWAY, false, 802, "post-service 와의 통신에 실패하였습니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, false, 888, "서버에서 요청을 처리하지 못했습니다."),
+
 
     /**
      * 900 ~ 999 : validation error
@@ -73,7 +77,8 @@ public enum ErrorCode {
     FAILED_TO_UPDATE_PROFILE_INFORMATION(HttpStatus.INTERNAL_SERVER_ERROR, false, 1202, "프로필 정보 변경에 실패하였습니다."),
     FAILED_TO_CREATE_GRADE(HttpStatus.INTERNAL_SERVER_ERROR, false, 1203, "등급 생성에 실패하였습니다."),
     FAILED_TO_FIND_GRADE(HttpStatus.BAD_REQUEST, false, 1204, "등급 조회에 실패하였습니다."),
-    FAILED_TO_UPDATE_PROFILE_IMAGE(HttpStatus.INTERNAL_SERVER_ERROR, false, 1206, "프로필 이미지 변경에 실패하였습니다.");
+    FAILED_TO_UPDATE_PROFILE_IMAGE(HttpStatus.INTERNAL_SERVER_ERROR, false, 1206, "프로필 이미지 변경에 실패하였습니다."),
+
 
     /**
      * 2000 : post service error
@@ -90,6 +95,13 @@ public enum ErrorCode {
     /**
      * 5000 : notice service error
      */
+
+    /**
+     * 6000 : review service error
+     */
+    // review : 6000 ~ 6099
+    FAILED_TO_CREATE_REVIEW(HttpStatus.INTERNAL_SERVER_ERROR, false, 6000, "리뷰 생성에 실패하였습니다."),
+    ;
 
     private final HttpStatus httpStatus;
     private final boolean isSuccess;
