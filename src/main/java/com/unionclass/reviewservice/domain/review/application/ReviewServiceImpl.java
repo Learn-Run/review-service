@@ -2,12 +2,13 @@ package com.unionclass.reviewservice.domain.review.application;
 
 import com.unionclass.reviewservice.client.post.application.CommunityServiceClient;
 import com.unionclass.reviewservice.client.post.dto.out.GetPostInfoResDto;
-import com.unionclass.reviewservice.client.post.vo.out.GetPostInfoResVo;
 import com.unionclass.reviewservice.common.exception.BaseException;
 import com.unionclass.reviewservice.common.exception.ErrorCode;
-import com.unionclass.reviewservice.common.response.BaseResponseEntity;
 import com.unionclass.reviewservice.domain.review.dto.in.CreateReviewReqDto;
-import com.unionclass.reviewservice.domain.review.dto.in.UpdateReviewReqDto;
+import com.unionclass.reviewservice.domain.review.dto.in.UpdateContentsReqDto;
+import com.unionclass.reviewservice.domain.review.dto.in.UpdateImagesResDto;
+import com.unionclass.reviewservice.domain.review.entity.Image;
+import com.unionclass.reviewservice.domain.review.entity.Review;
 import com.unionclass.reviewservice.domain.review.factory.Imagefactory;
 import com.unionclass.reviewservice.domain.review.infrastructure.ReviewRepository;
 import feign.FeignException;
@@ -15,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -52,22 +55,45 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Transactional
     @Override
-    public void updateContents(UpdateReviewReqDto updateReviewReqDto) {
+    public void updateContents(UpdateContentsReqDto updateContentsReqDto) {
 
         try {
-            reviewRepository.save(updateReviewReqDto.toEntity(
-                    reviewRepository.findByPost_PostUuidAndReviewerUuid(
-                            updateReviewReqDto.getPostUuid(),
-                            updateReviewReqDto.getReviewerUuid()
-                    ).orElseThrow(() -> new BaseException(ErrorCode.FAILED_TO_FIND_REVIEW))));
+            reviewRepository.save(
+                    updateContentsReqDto.toEntity(
+                            reviewRepository.findByPost_PostUuidAndReviewerUuid(
+                                    updateContentsReqDto.getPostUuid(),
+                                    updateContentsReqDto.getReviewerUuid()
+                            ).orElseThrow(() -> new BaseException(ErrorCode.FAILED_TO_FIND_REVIEW))));
 
-            log.info("리뷰 수정 성공 - postUuid: {}, reviewerUuid: {}",
-                    updateReviewReqDto.getPostUuid(), updateReviewReqDto.getReviewerUuid());
+            log.info("리뷰 내용 수정 성공 - postUuid: {}, reviewerUuid: {}",
+                    updateContentsReqDto.getPostUuid(), updateContentsReqDto.getReviewerUuid());
 
         } catch (Exception e) {
+            log.warn("리뷰 내용 수정 중 알 수 없는 오류 발생 - postUuid: {}, reviewerUuid: {}, message: {}",
+                    updateContentsReqDto.getPostUuid(), updateContentsReqDto.getReviewerUuid(), e.getMessage());
+            throw new BaseException(ErrorCode.FAILED_TO_UPDATE_REVIEW_CONTENTS);
+        }
+    }
 
-            log.error("리뷰 수정 중 알 수 없는 오류 발생 - postUuid: {}, reviewerUuid: {}, message: {}",
-                    updateReviewReqDto.getPostUuid(), updateReviewReqDto.getReviewerUuid(), e.getMessage());
+    @Transactional
+    @Override
+    public void updateImages(UpdateImagesResDto updateImagesResDto) {
+
+        try {
+            reviewRepository.save(updateImagesResDto.toEntity(
+                    reviewRepository.findByPost_PostUuidAndReviewerUuid(
+                            updateImagesResDto.getPostUuid(),
+                            updateImagesResDto.getReviewerUuid()
+                    ).orElseThrow(() -> new BaseException(ErrorCode.FAILED_TO_FIND_REVIEW)),
+                    imagefactory.createImages(updateImagesResDto.getImageList())));
+
+            log.info("리뷰 이미지 수정 성공 - postUuid: {}, reviewerUuid: {}",
+                    updateImagesResDto.getPostUuid(), updateImagesResDto.getReviewerUuid());
+
+        } catch (Exception e) {
+            log.warn("리뷰 이미지 수정 중 알 수 없는 오류 발생 - postUuid: {}, reviewerUuid: {}, message: {}",
+                    updateImagesResDto.getPostUuid(), updateImagesResDto.getReviewerUuid(), e.getMessage());
+            throw new BaseException(ErrorCode.FAILED_TO_UPDATE_REVIEW_IMAGES);
         }
     }
 }

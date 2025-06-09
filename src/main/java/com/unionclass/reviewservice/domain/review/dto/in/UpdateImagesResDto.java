@@ -1,43 +1,46 @@
 package com.unionclass.reviewservice.domain.review.dto.in;
 
+import com.unionclass.reviewservice.domain.review.entity.Image;
 import com.unionclass.reviewservice.domain.review.entity.Review;
-import com.unionclass.reviewservice.domain.review.vo.UpdateReviewReqVo;
+import com.unionclass.reviewservice.domain.review.vo.UpdateImagesReqVo;
+import jakarta.validation.Valid;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
-public class UpdateReviewReqDto {
+public class UpdateImagesResDto {
 
     private String reviewerUuid;
     private String postUuid;
-    private String contents;
+    private List<ImageReqDto> imageList;
 
     @Builder
-    public UpdateReviewReqDto(String reviewerUuid, String postUuid, String contents) {
+    public UpdateImagesResDto(String reviewerUuid, String postUuid, List<ImageReqDto> imageList) {
         this.reviewerUuid = reviewerUuid;
         this.postUuid = postUuid;
-        this.contents = contents;
+        this.imageList = imageList;
     }
 
-    public static UpdateReviewReqDto of(String memberUuid, String postUuid, UpdateReviewReqVo updateReviewReqVo) {
-        return UpdateReviewReqDto.builder()
+    public static UpdateImagesResDto of(String memberUuid, String postUuid, UpdateImagesReqVo updateImagesReqVo) {
+        return UpdateImagesResDto.builder()
                 .reviewerUuid(memberUuid)
                 .postUuid(postUuid)
-                .contents(updateReviewReqVo.getContents())
+                .imageList(updateImagesReqVo.getImageList())
                 .build();
     }
 
-    public Review toEntity(Review review) {
+    public Review toEntity(Review review, List<Image> imageList) {
         return Review.builder()
                 .id(review.getId())
                 .reviewerUuid(review.getReviewerUuid())
                 .revieweeUuid(review.getRevieweeUuid())
                 .rating(review.getRating())
-                .contents(contents)
-                .post(review.getPost())
-                .imageList(review.getImageList())
+                .contents(review.getContents())
+                .imageList(imageList)
                 .deleted(review.isDeleted())
                 .deletedAt(review.getDeletedAt())
                 .build();
