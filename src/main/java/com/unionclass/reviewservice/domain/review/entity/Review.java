@@ -48,4 +48,9 @@ public class Review {
         this.deleted = deleted;
         this.deletedAt = deletedAt;
     }
+
+    public void deleteReview() {
+        this.deleted = true;
+        this.deletedAt = LocalDateTime.now();
+    }
 }

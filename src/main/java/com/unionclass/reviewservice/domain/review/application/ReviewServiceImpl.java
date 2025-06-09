@@ -5,6 +5,7 @@ import com.unionclass.reviewservice.client.post.dto.out.GetPostInfoResDto;
 import com.unionclass.reviewservice.common.exception.BaseException;
 import com.unionclass.reviewservice.common.exception.ErrorCode;
 import com.unionclass.reviewservice.domain.review.dto.in.CreateReviewReqDto;
+import com.unionclass.reviewservice.domain.review.dto.in.DeleteReviewDto;
 import com.unionclass.reviewservice.domain.review.dto.in.UpdateContentsReqDto;
 import com.unionclass.reviewservice.domain.review.dto.in.UpdateImagesResDto;
 import com.unionclass.reviewservice.domain.review.entity.Image;
@@ -94,6 +95,29 @@ public class ReviewServiceImpl implements ReviewService {
             log.warn("리뷰 이미지 수정 중 알 수 없는 오류 발생 - postUuid: {}, reviewerUuid: {}, message: {}",
                     updateImagesResDto.getPostUuid(), updateImagesResDto.getReviewerUuid(), e.getMessage());
             throw new BaseException(ErrorCode.FAILED_TO_UPDATE_REVIEW_IMAGES);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void deleteReview(DeleteReviewDto deleteReviewDto) {
+
+        try {
+            Review review = reviewRepository.findByPost_PostUuidAndReviewerUuid(
+                    deleteReviewDto.getPostUuid(),
+                    deleteReviewDto.getReviewerUuid()
+            ).orElseThrow(() -> new BaseException(ErrorCode.FAILED_TO_FIND_REVIEW));
+
+            review.deleteReview();
+            reviewRepository.save(review);
+
+            log.info("리뷰 삭제 성공 - postUuid: {}, reviewerUuid: {}",
+                    deleteReviewDto.getPostUuid(), deleteReviewDto.getReviewerUuid());
+
+        } catch (Exception e) {
+            log.warn("리뷰 삭제 중 알 수 없는 오류 발생 - postUuid: {}, reviewerUuid: {}, message: {}",
+                    deleteReviewDto.getPostUuid(), deleteReviewDto.getReviewerUuid(), e.getMessage());
+            throw new BaseException(ErrorCode.FAILED_TO_DELETE_REVIEW);
         }
     }
 }

@@ -105,6 +105,7 @@ public enum ErrorCode {
     FAILED_TO_FIND_REVIEW(HttpStatus.NOT_FOUND, false, 6002, "해당 리뷰를 찾을 수 없습니다."),
     FAILED_TO_UPDATE_REVIEW_CONTENTS(HttpStatus.INTERNAL_SERVER_ERROR, false, 6003, "리뷰 내용 수정에 실패하였습니다."),
     FAILED_TO_UPDATE_REVIEW_IMAGES(HttpStatus.INTERNAL_SERVER_ERROR, false, 6004, "리뷰 이미지 수정에 실패하였습니다."),
+    FAILED_TO_DELETE_REVIEW(HttpStatus.INTERNAL_SERVER_ERROR, false, 6005, "리뷰 삭제에 실패하였습니다."),
     ;
 
     private final HttpStatus httpStatus;

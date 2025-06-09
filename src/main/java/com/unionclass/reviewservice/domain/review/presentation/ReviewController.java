@@ -4,6 +4,7 @@ import com.unionclass.reviewservice.common.response.BaseResponseEntity;
 import com.unionclass.reviewservice.common.response.ResponseMessage;
 import com.unionclass.reviewservice.domain.review.application.ReviewService;
 import com.unionclass.reviewservice.domain.review.dto.in.CreateReviewReqDto;
+import com.unionclass.reviewservice.domain.review.dto.in.DeleteReviewDto;
 import com.unionclass.reviewservice.domain.review.dto.in.UpdateContentsReqDto;
 import com.unionclass.reviewservice.domain.review.dto.in.UpdateImagesResDto;
 import com.unionclass.reviewservice.domain.review.vo.CreateReviewReqVo;
@@ -29,6 +30,7 @@ public class ReviewController {
      * 1. 리뷰 생성
      * 2. 리뷰 내용 수정
      * 3. 리뷰 이미지 수정
+     * 4. 리뷰 삭제
      */
 
     /**
@@ -163,5 +165,43 @@ public class ReviewController {
     ) {
         reviewService.updateImages(UpdateImagesResDto.of(memberUuid, postUuid, updateImagesReqVo));
         return new BaseResponseEntity<>(ResponseMessage.SUCCESS_UPDATE_REVIEW_IMAGES.getMessage());
+    }
+
+    /**
+     * 4. 리뷰 삭제
+     *
+     * @param memberUuid
+     * @param postUuid
+     * @return
+     */
+    @Operation(
+            summary = "리뷰 삭제",
+            description = """
+                    사용자가 작성한 리뷰를 삭제하는 API 입니다.
+                    이 API 는 실제 DB 에서 데이터를 제거하는 것이 아닌, **소프트 딜리트 방식**으로 처리됩니다.
+                    deleted 값을 true 로 변경하고 deletedAt 시간을 기록합니다.
+                    
+                    [요청 헤더]
+                    - X-Member-UUID : (String) 리뷰 작성자 UUID
+            
+                    [요청 경로]
+                    - postUuid : (String) 리뷰 대상 질문 UUID
+            
+                    [처리 방식]
+                    - postUuid 와 reviewerUuid 를 기준으로 리뷰 조회
+                    - 해당 리뷰의 삭제 상태를 true 로 변경 (소프트 딜리트)
+            
+                    [예외 상황]
+                    - FAILED_TO_FIND_REVIEW : 해당 postUuid 와 reviewerUuid 조합으로 조회한 리뷰가 존재하지 않는 경우
+                    - FAILED_TO_DELETE_REVIEW : 알 수 없는 오류로 인해 리뷰 삭제 실패
+                    """
+    )
+    @DeleteMapping("/{postUuid}")
+    public BaseResponseEntity<Void> deleteReview(
+            @RequestHeader("X-Member-UUID") String memberUuid,
+            @PathVariable String postUuid
+    ) {
+        reviewService.deleteReview(DeleteReviewDto.of(memberUuid, postUuid));
+        return new BaseResponseEntity<>(ResponseMessage.SUCCESS_DELETE_REVIEW.getMessage());
     }
 }

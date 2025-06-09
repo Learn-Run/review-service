@@ -40,6 +40,7 @@ public class UpdateImagesResDto {
                 .revieweeUuid(review.getRevieweeUuid())
                 .rating(review.getRating())
                 .contents(review.getContents())
+                .post(review.getPost())
                 .imageList(imageList)
                 .deleted(review.isDeleted())
                 .deletedAt(review.getDeletedAt())
