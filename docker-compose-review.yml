@@ -4,8 +4,6 @@ services:
   review-service:
     image: 009160040466.dkr.ecr.ap-northeast-2.amazonaws.com/learn-run/review-service:latest
     container_name: review-service
-    ports:
-      - "8083:8083"
     env_file:
       - .env
     networks:
