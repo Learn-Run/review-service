@@ -4,6 +4,7 @@ import com.unionclass.reviewservice.client.post.dto.GetPostInfoResDto;
 import com.unionclass.reviewservice.domain.review.entity.Image;
 import com.unionclass.reviewservice.domain.review.entity.Post;
 import com.unionclass.reviewservice.domain.review.entity.Review;
+import com.unionclass.reviewservice.domain.review.enums.Rating;
 import com.unionclass.reviewservice.domain.review.vo.CreateReviewReqVo;
 import jakarta.validation.Valid;
 import lombok.Builder;
@@ -18,13 +19,13 @@ public class CreateReviewReqDto {
 
     private String reviewerUuid;
     private String postUuid;
-    private Double rating;
+    private Rating rating;
     private String contents;
     private List<ImageReqDto> imageList;
 
     @Builder
     public CreateReviewReqDto(
-            String reviewerUuid, String postUuid, Double rating, String contents, List<ImageReqDto> imageList
+            String reviewerUuid, String postUuid, Rating rating, String contents, List<ImageReqDto> imageList
     ) {
         this.reviewerUuid = reviewerUuid;
         this.postUuid = postUuid;

@@ -1,5 +1,6 @@
 package com.unionclass.reviewservice.domain.review.entity;
 
+import com.unionclass.reviewservice.domain.review.enums.Rating;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +25,7 @@ public class Review {
     // 리뷰 대상자 UUID
     private String revieweeUuid;
 
-    private Double rating;
+    private Rating rating;
     private String contents;
     private Post post;
     private List<Image> imageList;
@@ -34,7 +35,7 @@ public class Review {
 
     @Builder
     public Review(
-            String id, String reviewerUuid, String revieweeUuid, Double rating,
+            String id, String reviewerUuid, String revieweeUuid, Rating rating,
             String contents, Post post, List<Image> imageList, boolean deletedStatus, LocalDateTime deletedAt
     ) {
         this.id = id;

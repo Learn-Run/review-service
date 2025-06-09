@@ -30,7 +30,7 @@ public enum ErrorCode {
      */
     LOCK_ACQUISITION_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, false, 800, "락 획득에 실패하였습니다."),
     FEIGN_CLIENT_ERROR(HttpStatus.BAD_GATEWAY, false, 801, "마이크로 서비스 간의 통신에 실패하였습니다."),
-    POST_SERVICE_COMMUNICATION_FAILED(HttpStatus.BAD_GATEWAY, false, 802, "post-service 와의 통신에 실패하였습니다."),
+    COMMUNITY_SERVICE_COMMUNICATION_FAILED(HttpStatus.BAD_GATEWAY, false, 802, "community-service 와의 통신에 실패하였습니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, false, 888, "서버에서 요청을 처리하지 못했습니다."),
 
 
@@ -101,6 +101,7 @@ public enum ErrorCode {
      */
     // review : 6000 ~ 6099
     FAILED_TO_CREATE_REVIEW(HttpStatus.INTERNAL_SERVER_ERROR, false, 6000, "리뷰 생성에 실패하였습니다."),
+    INVALID_RATING_VALUE(HttpStatus.BAD_REQUEST, false, 6001, "유효하지 않은 평점입니다."),
     ;
 
     private final HttpStatus httpStatus;
