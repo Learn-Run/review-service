@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Document(collation = "review")
+@Document(collection = "review")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Review {
@@ -30,13 +30,13 @@ public class Review {
     private Post post;
     private List<Image> imageList;
 
-    private boolean deletedStatus;
+    private boolean deleted;
     private LocalDateTime deletedAt;
 
     @Builder
     public Review(
             String id, String reviewerUuid, String revieweeUuid, Rating rating,
-            String contents, Post post, List<Image> imageList, boolean deletedStatus, LocalDateTime deletedAt
+            String contents, Post post, List<Image> imageList, boolean deleted, LocalDateTime deletedAt
     ) {
         this.id = id;
         this.reviewerUuid = reviewerUuid;
@@ -45,7 +45,7 @@ public class Review {
         this.contents = contents;
         this.post = post;
         this.imageList = imageList;
-        this.deletedStatus = deletedStatus;
+        this.deleted = deleted;
         this.deletedAt = deletedAt;
     }
 }

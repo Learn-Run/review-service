@@ -4,7 +4,9 @@ import com.unionclass.reviewservice.common.response.BaseResponseEntity;
 import com.unionclass.reviewservice.common.response.ResponseMessage;
 import com.unionclass.reviewservice.domain.review.application.ReviewService;
 import com.unionclass.reviewservice.domain.review.dto.in.CreateReviewReqDto;
+import com.unionclass.reviewservice.domain.review.dto.in.UpdateReviewReqDto;
 import com.unionclass.reviewservice.domain.review.vo.CreateReviewReqVo;
+import com.unionclass.reviewservice.domain.review.vo.UpdateReviewReqVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -23,6 +25,8 @@ public class ReviewController {
      * /api/v1/review
      *
      * 1. 리뷰 생성
+     * 2. 리뷰 내용 수정
+     * 3. 리뷰 이미지 수정
      */
 
     /**
@@ -46,7 +50,7 @@ public class ReviewController {
                     
                     [요청 바디]
                     - rating : (Rating) 필수 입력, 리뷰 평점 (1.0 ~ 5.0, 0.5 단위)
-                    - contents : (String) 필수 입력, 리뷰 내용 - 필수
+                    - contents : (String) 필수 입력, 리뷰 내용
                     - imageList : (List<ImageReqDto>) 선택 입력, 첨부 이미지 목록
                         - type : (String) 이미지 타입 (jpg, jpeg, png, gif, webp, svg, heic)
                         - imageUrl : (String) 이미지 경로
@@ -69,5 +73,46 @@ public class ReviewController {
     ) {
         reviewService.createReview(CreateReviewReqDto.of(memberUuid, postUuid, createReviewReqVo));
         return new BaseResponseEntity<>(ResponseMessage.SUCCESS_CREATE_REVIEW.getMessage());
+    }
+
+    /**
+     * 2. 리뷰 내용 수정
+     *
+     * @param memberUuid
+     * @param postUuid
+     * @param updateReviewReqVo
+     * @return
+     */
+    @Operation(
+            summary = "리뷰 내용 수정",
+            description = """
+                    작성한 리뷰의 내용(contents)를 수정하는 API 입니다.
+                    
+                    [요청 헤더]
+                    - X-Member-UUID : (String) 리뷰 작성자 UUID
+                    
+                    [요청 경로]
+                    - postUuid : (String) 리뷰 대상 질문 UUID
+                    
+                    [요청 바디]
+                    - contents : (String) 필수 입력, 수정할 리뷰 내용
+                    
+                    [처리 로직]
+                    - postUuid 와 reviewUuid 를 기준으로 기존 리뷰 조회
+                    - 해당 리뷰의 내용을 새로운 값으로 갱신
+                    
+                    [예외 상황]
+                    - FAILED_TO_FIND_REVIEW : 해당 postUuid 와 reviewerUuid 조합의 리뷰를 찾지 못한 경우
+                    - FAILED_TO_UPDATE_REVIEW : 알 수 없는 오류로 인해 리뷰 내용 수정 실패
+                    """
+    )
+    @PutMapping("/{postUuid}/contents")
+    public BaseResponseEntity<Void> updateContents(
+            @RequestHeader("X-Member-UUID") String memberUuid,
+            @PathVariable String postUuid,
+            @Valid @RequestBody UpdateReviewReqVo updateReviewReqVo
+    ) {
+        reviewService.updateContents(UpdateReviewReqDto.of(memberUuid, postUuid, updateReviewReqVo));
+        return new BaseResponseEntity<>(ResponseMessage.SUCCESS_UPDATE_REVIEW.getMessage());
     }
 }

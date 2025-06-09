@@ -1,12 +1,11 @@
 package com.unionclass.reviewservice.domain.review.dto.in;
 
-import com.unionclass.reviewservice.client.post.dto.GetPostInfoResDto;
+import com.unionclass.reviewservice.client.post.dto.out.GetPostInfoResDto;
 import com.unionclass.reviewservice.domain.review.entity.Image;
 import com.unionclass.reviewservice.domain.review.entity.Post;
 import com.unionclass.reviewservice.domain.review.entity.Review;
 import com.unionclass.reviewservice.domain.review.enums.Rating;
 import com.unionclass.reviewservice.domain.review.vo.CreateReviewReqVo;
-import jakarta.validation.Valid;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,7 +51,7 @@ public class CreateReviewReqDto {
                 .contents(contents)
                 .post(Post.from(getPostInfoResDto))
                 .imageList(images)
-                .deletedStatus(false)
+                .deleted(false)
                 .build();
     }
 }

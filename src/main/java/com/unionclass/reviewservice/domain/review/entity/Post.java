@@ -1,6 +1,6 @@
 package com.unionclass.reviewservice.domain.review.entity;
 
-import com.unionclass.reviewservice.client.post.dto.GetPostInfoResDto;
+import com.unionclass.reviewservice.client.post.dto.out.GetPostInfoResDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,10 +18,10 @@ public class Post {
         this.postTitle = postTitle;
     }
 
-    public static Post from(GetPostInfoResDto dto) {
+    public static Post from(GetPostInfoResDto getPostInfoResDto) {
         return Post.builder()
-                .postUuid(dto.getPostUuid())
-                .postTitle(dto.getPostTitle())
+                .postUuid(getPostInfoResDto.getPostUuid())
+                .postTitle(getPostInfoResDto.getPostTitle())
                 .build();
     }
 }
