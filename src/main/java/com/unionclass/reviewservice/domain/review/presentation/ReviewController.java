@@ -8,6 +8,7 @@ import com.unionclass.reviewservice.domain.review.dto.in.DeleteReviewDto;
 import com.unionclass.reviewservice.domain.review.dto.in.UpdateContentsReqDto;
 import com.unionclass.reviewservice.domain.review.dto.in.UpdateImagesResDto;
 import com.unionclass.reviewservice.domain.review.vo.CreateReviewReqVo;
+import com.unionclass.reviewservice.domain.review.vo.GetReviewInfoResVo;
 import com.unionclass.reviewservice.domain.review.vo.UpdateContentsReqVo;
 import com.unionclass.reviewservice.domain.review.vo.UpdateImagesReqVo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,6 +32,7 @@ public class ReviewController {
      * 2. 리뷰 내용 수정
      * 3. 리뷰 이미지 수정
      * 4. 리뷰 삭제
+     * 5. 리뷰 단건 조회
      */
 
     /**
@@ -203,5 +205,50 @@ public class ReviewController {
     ) {
         reviewService.deleteReview(DeleteReviewDto.of(memberUuid, postUuid));
         return new BaseResponseEntity<>(ResponseMessage.SUCCESS_DELETE_REVIEW.getMessage());
+    }
+
+    /**
+     * 5. 리뷰 단건 조회
+     *
+     * @param reviewId
+     * @return
+     */
+    @Operation(
+            summary = "리뷰 ID 로 리뷰 단건 조회",
+            description = """
+                    리뷰 ID(reviewId)를 기준으로 단일 리뷰 정보를 조회하는 API 입니다.
+                    
+                    [요청 경로]
+                    - reviewId : (String) 조회할 리뷰의 ID
+                    
+                    [응답 필드]
+                    - reviewerUuid : (String) 리뷰 작성자 UUID
+                    - revieweeUuid : (String) 리뷰 대상자 UUID
+                    - rating : (Rating) 리뷰 평점 (1.0 ~ 5.0, 0.5 단위)
+                    - contents : (String) 리뷰 내용
+                    - post : 리뷰 대상 질문
+                        - postUuid : (String) 질문 UUID
+                        - postTitle : (String) 질문 제목
+                    - imageList : (List<ImageReqDto>) 첨부 이미지 목록
+                        - type : (String) 이미지 타입 (jpg, jpeg, png, gif, webp, svg, heic)
+                        - imageUrl : (String) 이미지 경로
+                        - alt : (String) 이미지 대체 텍스트 ("리뷰에 대한 ()번째 첨부 이미지입니다." 의 형태)
+                    
+                    [처리 로직]
+                    - 리뷰 ID로 DB 에서 리뷰 정보를 조회 후 결과를 VO 로 반환
+                   
+                    [예외 상황]
+                    - FAILED_TO_FIND_REVIEW : 해당 리뷰 ID로 리뷰를 찾을 수 없는 경우
+                    - REVIEW_LOOKUP_FAILED : 알 수 없는 오류로 인해 리뷰 단건 조회 실패
+                    """
+    )
+    @GetMapping("/info/{reviewId}")
+    public BaseResponseEntity<GetReviewInfoResVo> getReviewInfo(
+            @PathVariable String reviewId
+    ) {
+        return new BaseResponseEntity<>(
+                ResponseMessage.SUCCESS_FIND_REVIEW.getMessage(),
+                reviewService.getReviewInfo(reviewId).toVo()
+        );
     }
 }

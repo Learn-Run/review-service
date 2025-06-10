@@ -1,14 +1,10 @@
 package com.unionclass.reviewservice.domain.review.application;
 
-import com.unionclass.reviewservice.client.post.application.CommunityServiceClient;
+import com.unionclass.reviewservice.client.post.application.PostServiceClient;
 import com.unionclass.reviewservice.client.post.dto.out.GetPostInfoResDto;
 import com.unionclass.reviewservice.common.exception.BaseException;
 import com.unionclass.reviewservice.common.exception.ErrorCode;
-import com.unionclass.reviewservice.domain.review.dto.in.CreateReviewReqDto;
-import com.unionclass.reviewservice.domain.review.dto.in.DeleteReviewDto;
-import com.unionclass.reviewservice.domain.review.dto.in.UpdateContentsReqDto;
-import com.unionclass.reviewservice.domain.review.dto.in.UpdateImagesResDto;
-import com.unionclass.reviewservice.domain.review.entity.Image;
+import com.unionclass.reviewservice.domain.review.dto.in.*;
 import com.unionclass.reviewservice.domain.review.entity.Review;
 import com.unionclass.reviewservice.domain.review.factory.Imagefactory;
 import com.unionclass.reviewservice.domain.review.infrastructure.ReviewRepository;
@@ -18,8 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -27,7 +21,7 @@ import java.util.List;
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
-    private final CommunityServiceClient communityServiceClient;
+    private final PostServiceClient postServiceClient;
     private final Imagefactory imagefactory;
 
     @Transactional
@@ -36,7 +30,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         try {
             GetPostInfoResDto getPostInfoResDto = GetPostInfoResDto.from(
-                    communityServiceClient.getPostInfo(createReviewReqDto.getPostUuid()).result());
+                    postServiceClient.getPostInfo(createReviewReqDto.getPostUuid()).result());
             log.info("질문 조회 성공 - postUuid: {}", getPostInfoResDto.getPostUuid());
 
             reviewRepository.save(createReviewReqDto.toEntity(
@@ -118,6 +112,19 @@ public class ReviewServiceImpl implements ReviewService {
             log.warn("리뷰 삭제 중 알 수 없는 오류 발생 - postUuid: {}, reviewerUuid: {}, message: {}",
                     deleteReviewDto.getPostUuid(), deleteReviewDto.getReviewerUuid(), e.getMessage());
             throw new BaseException(ErrorCode.FAILED_TO_DELETE_REVIEW);
+        }
+    }
+
+    @Override
+    public GetReviewInfoResDto getReviewInfo(String reviewId) {
+        try {
+            return GetReviewInfoResDto.from(reviewRepository.findById(reviewId)
+                    .orElseThrow(() -> new BaseException(ErrorCode.FAILED_TO_FIND_REVIEW)));
+        } catch (BaseException e) {
+            throw e;
+        } catch (Exception e) {
+            log.warn("리뷰 단건 조회 중 알 수 없는 오류 발생 - reviewId: {}, message: {}", reviewId, e.getMessage());
+            throw new BaseException(ErrorCode.REVIEW_LOOKUP_FAILED);
         }
     }
 }
