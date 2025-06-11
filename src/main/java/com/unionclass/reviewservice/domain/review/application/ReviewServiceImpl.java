@@ -4,6 +4,8 @@ import com.unionclass.reviewservice.client.post.application.PostServiceClient;
 import com.unionclass.reviewservice.client.post.dto.out.GetPostInfoResDto;
 import com.unionclass.reviewservice.common.exception.BaseException;
 import com.unionclass.reviewservice.common.exception.ErrorCode;
+import com.unionclass.reviewservice.common.kafka.event.ReviewCreatedEvent;
+import com.unionclass.reviewservice.common.kafka.util.KafkaProducer;
 import com.unionclass.reviewservice.domain.review.dto.in.*;
 import com.unionclass.reviewservice.domain.review.entity.Review;
 import com.unionclass.reviewservice.domain.review.factory.Imagefactory;
@@ -23,6 +25,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final PostServiceClient postServiceClient;
     private final Imagefactory imagefactory;
+    private final KafkaProducer kafkaProducer;
 
     @Transactional
     @Override
@@ -33,10 +36,12 @@ public class ReviewServiceImpl implements ReviewService {
                     postServiceClient.getPostInfo(createReviewReqDto.getPostUuid()).result());
             log.info("질문 조회 성공 - postUuid: {}", getPostInfoResDto.getPostUuid());
 
-            reviewRepository.save(createReviewReqDto.toEntity(
+            Review review = reviewRepository.save(createReviewReqDto.toEntity(
                     imagefactory.createImages(createReviewReqDto.getImageList()), getPostInfoResDto));
             log.info("질문에 대한 리뷰 생성 성공 - postUuid: {}, reviewerUuid: {}",
                     getPostInfoResDto.getPostUuid(), createReviewReqDto.getReviewerUuid());
+
+            kafkaProducer.sendReviewCreatedEvent(ReviewCreatedEvent.from(review));
 
         } catch (FeignException e) {
             log.warn("community-service 와의 통신 실패 - postUuid: {}", createReviewReqDto.getPostUuid());

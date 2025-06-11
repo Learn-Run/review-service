@@ -1,5 +1,6 @@
 package com.unionclass.reviewservice.domain.review.entity;
 
+import com.unionclass.reviewservice.common.entity.BaseDocument;
 import com.unionclass.reviewservice.domain.review.enums.Rating;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -14,7 +15,7 @@ import java.util.List;
 @Document(collection = "review")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Review {
+public class Review extends BaseDocument {
 
     @Id
     private String id;

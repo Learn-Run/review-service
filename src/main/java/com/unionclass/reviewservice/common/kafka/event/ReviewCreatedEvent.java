@@ -1,5 +1,6 @@
 package com.unionclass.reviewservice.common.kafka.event;
 
+import com.unionclass.reviewservice.domain.review.entity.Review;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,5 +22,14 @@ public class ReviewCreatedEvent {
         this.reviewId = reviewId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public static ReviewCreatedEvent from(Review review) {
+        return ReviewCreatedEvent.builder()
+                .memberUuid(review.getReviewerUuid())
+                .reviewId(review.getId())
+                .createdAt(review.getCreatedAt())
+                .updatedAt(review.getUpdatedAt())
+                .build();
     }
 }
