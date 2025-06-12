@@ -1,4 +1,7 @@
 spring:
+  kafka:
+    bootstrap-servers: ${EC2_HOST}:10000,${EC2_HOST}:10001,${EC2_HOST}:10002
+
   data:
     mongodb:
       uri: ${MONGODB_URI_REVIEW}

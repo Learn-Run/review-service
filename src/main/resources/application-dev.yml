@@ -1,11 +1,7 @@
 spring:
   kafka:
     bootstrap-servers: localhost:10000,localhost:10001,localhost:10002
-    producer:
-      key-deserializer: org.apache.kafka.common.serialization.StringSerializer
-      value-deserializer: org.apache.kafka.common.serialization.StringSerializer
-    topics:
-      review-created: review-created-topic
+
   data:
     mongodb:
       uri: mongodb://localhost:27017/pl-review-v1
