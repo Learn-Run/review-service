@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  review-service:
+    image: 009160040466.dkr.ecr.ap-northeast-2.amazonaws.com/learn-run/review-service:latest
+    container_name: review-service
+    env_file:
+      - .env
+    networks:
+      - shared-net
+
+networks:
+  shared-net:
+    external: true
