@@ -27,7 +27,7 @@ spring:
       linger-ms: 1
       buffer-memory: 33554432
     topics:
-      review-created: review-created-topic
+      review-created: review-created
 
 logging:
   level:
