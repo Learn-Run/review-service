@@ -16,7 +16,7 @@ spring:
   application:
     name: review-service
   profiles:
-    active: dev
+    active: prod
   kafka:
     producer:
       key-deserializer: org.apache.kafka.common.serialization.StringSerializer
