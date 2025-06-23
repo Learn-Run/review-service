@@ -6,7 +6,7 @@ import com.unionclass.reviewservice.domain.review.application.ReviewService;
 import com.unionclass.reviewservice.domain.review.dto.in.CreateReviewReqDto;
 import com.unionclass.reviewservice.domain.review.dto.in.DeleteReviewDto;
 import com.unionclass.reviewservice.domain.review.dto.in.UpdateContentsReqDto;
-import com.unionclass.reviewservice.domain.review.dto.in.UpdateImagesResDto;
+import com.unionclass.reviewservice.domain.review.dto.out.UpdateImagesResDto;
 import com.unionclass.reviewservice.domain.review.vo.CreateReviewReqVo;
 import com.unionclass.reviewservice.domain.review.vo.GetReviewInfoResVo;
 import com.unionclass.reviewservice.domain.review.vo.UpdateContentsReqVo;
@@ -222,6 +222,7 @@ public class ReviewController {
                     - reviewId : (String) 조회할 리뷰의 ID
                     
                     [응답 필드]
+                    - reviewId : (String) 리뷰 ID (UUID 형식)
                     - reviewerUuid : (String) 리뷰 작성자 UUID
                     - revieweeUuid : (String) 리뷰 대상자 UUID
                     - rating : (Rating) 리뷰 평점 (1.0 ~ 5.0, 0.5 단위)

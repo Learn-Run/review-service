@@ -1,4 +1,4 @@
-package com.unionclass.reviewservice.domain.review.dto.in;
+package com.unionclass.reviewservice.domain.review.dto.out;
 
 import com.unionclass.reviewservice.domain.review.entity.Image;
 import com.unionclass.reviewservice.domain.review.entity.Post;
@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class GetReviewInfoResDto {
 
+    private String reviewId;
     private String reviewerUuid;
     private String revieweeUuid;
     private Rating rating;
@@ -23,7 +24,11 @@ public class GetReviewInfoResDto {
     private List<Image> imageList;
 
     @Builder
-    public GetReviewInfoResDto(String reviewerUuid, String revieweeUuid, Rating rating, String contents, Post post, List<Image> imageList) {
+    public GetReviewInfoResDto(
+            String reviewId, String reviewerUuid, String revieweeUuid,
+            Rating rating, String contents, Post post, List<Image> imageList
+    ) {
+        this.reviewId = reviewId;
         this.reviewerUuid = reviewerUuid;
         this.revieweeUuid = revieweeUuid;
         this.rating = rating;
@@ -34,6 +39,7 @@ public class GetReviewInfoResDto {
 
     public static GetReviewInfoResDto from(Review review) {
         return GetReviewInfoResDto.builder()
+                .reviewId(review.getId())
                 .reviewerUuid(review.getReviewerUuid())
                 .revieweeUuid(review.getRevieweeUuid())
                 .rating(review.getRating())
@@ -45,6 +51,7 @@ public class GetReviewInfoResDto {
 
     public GetReviewInfoResVo toVo() {
         return GetReviewInfoResVo.builder()
+                .reviewId(reviewId)
                 .reviewerUuid(reviewerUuid)
                 .revieweeUuid(revieweeUuid)
                 .rating(rating)

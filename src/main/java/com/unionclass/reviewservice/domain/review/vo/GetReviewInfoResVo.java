@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class GetReviewInfoResVo {
 
+    private String reviewId;
     private String reviewerUuid;
     private String revieweeUuid;
     private Rating rating;
@@ -21,7 +22,11 @@ public class GetReviewInfoResVo {
     private List<Image> imageList;
 
     @Builder
-    public GetReviewInfoResVo(String reviewerUuid, String revieweeUuid, Rating rating, String contents, Post post, List<Image> imageList) {
+    public GetReviewInfoResVo(
+            String reviewId, String reviewerUuid, String revieweeUuid,
+            Rating rating, String contents, Post post, List<Image> imageList
+    ) {
+        this.reviewId = reviewId;
         this.reviewerUuid = reviewerUuid;
         this.revieweeUuid = revieweeUuid;
         this.rating = rating;

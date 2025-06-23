@@ -1,9 +1,9 @@
-package com.unionclass.reviewservice.domain.review.dto.in;
+package com.unionclass.reviewservice.domain.review.dto.out;
 
+import com.unionclass.reviewservice.domain.review.dto.in.ImageReqDto;
 import com.unionclass.reviewservice.domain.review.entity.Image;
 import com.unionclass.reviewservice.domain.review.entity.Review;
 import com.unionclass.reviewservice.domain.review.vo.UpdateImagesReqVo;
-import jakarta.validation.Valid;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

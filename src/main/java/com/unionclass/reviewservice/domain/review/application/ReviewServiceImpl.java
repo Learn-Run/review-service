@@ -7,6 +7,8 @@ import com.unionclass.reviewservice.common.exception.ErrorCode;
 import com.unionclass.reviewservice.common.kafka.event.ReviewCreatedEvent;
 import com.unionclass.reviewservice.common.kafka.util.KafkaProducer;
 import com.unionclass.reviewservice.domain.review.dto.in.*;
+import com.unionclass.reviewservice.domain.review.dto.out.GetReviewInfoResDto;
+import com.unionclass.reviewservice.domain.review.dto.out.UpdateImagesResDto;
 import com.unionclass.reviewservice.domain.review.entity.Review;
 import com.unionclass.reviewservice.domain.review.factory.Imagefactory;
 import com.unionclass.reviewservice.domain.review.infrastructure.ReviewRepository;
@@ -123,13 +125,20 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public GetReviewInfoResDto getReviewInfo(String reviewId) {
         try {
+
             return GetReviewInfoResDto.from(reviewRepository.findById(reviewId)
                     .orElseThrow(() -> new BaseException(ErrorCode.FAILED_TO_FIND_REVIEW)));
+
         } catch (BaseException e) {
+
             throw e;
+
         } catch (Exception e) {
+
             log.warn("리뷰 단건 조회 중 알 수 없는 오류 발생 - reviewId: {}, message: {}", reviewId, e.getMessage());
+
             throw new BaseException(ErrorCode.REVIEW_LOOKUP_FAILED);
+
         }
     }
 }

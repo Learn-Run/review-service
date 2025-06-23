@@ -1,6 +1,8 @@
 package com.unionclass.reviewservice.domain.review.application;
 
 import com.unionclass.reviewservice.domain.review.dto.in.*;
+import com.unionclass.reviewservice.domain.review.dto.out.GetReviewInfoResDto;
+import com.unionclass.reviewservice.domain.review.dto.out.UpdateImagesResDto;
 
 public interface ReviewService {
 
