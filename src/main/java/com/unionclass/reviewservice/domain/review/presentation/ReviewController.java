@@ -234,6 +234,8 @@ public class ReviewController {
                         - type : (String) 이미지 타입 (jpg, jpeg, png, gif, webp, svg, heic)
                         - imageUrl : (String) 이미지 경로
                         - alt : (String) 이미지 대체 텍스트 ("리뷰에 대한 ()번째 첨부 이미지입니다." 의 형태)
+                    - createdAt : (LocalDateTime) 리뷰 생성일시
+                    - updatedAt : (LocalDateTime) 리뷰 수정일시
                     
                     [처리 로직]
                     - 리뷰 ID로 DB 에서 리뷰 정보를 조회 후 결과를 VO 로 반환

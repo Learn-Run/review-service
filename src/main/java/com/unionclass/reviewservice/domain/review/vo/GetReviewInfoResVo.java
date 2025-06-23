@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -20,11 +21,14 @@ public class GetReviewInfoResVo {
     private String contents;
     private Post post;
     private List<Image> imageList;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     @Builder
     public GetReviewInfoResVo(
             String reviewId, String reviewerUuid, String revieweeUuid,
-            Rating rating, String contents, Post post, List<Image> imageList
+            Rating rating, String contents, Post post, List<Image> imageList,
+            LocalDateTime createdAt, LocalDateTime updatedAt
     ) {
         this.reviewId = reviewId;
         this.reviewerUuid = reviewerUuid;
@@ -33,5 +37,7 @@ public class GetReviewInfoResVo {
         this.contents = contents;
         this.post = post;
         this.imageList = imageList;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 }
