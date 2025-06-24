@@ -34,7 +34,7 @@ public class MemberReview extends BaseEntity {
 
     @Comment("총 리뷰 평점 합계")
     @Column(nullable = false)
-    private long totalReviewSum;
+    private long totalReviewRatingSum;
 
     @Comment("평균 리뷰 평점")
     @Column(nullable = false)
@@ -49,14 +49,14 @@ public class MemberReview extends BaseEntity {
 
     @Builder
     public MemberReview(
-            Long id, Long uuid, String memberUuid, long totalReviewCount, long totalReviewSum,
+            Long id, Long uuid, String memberUuid, long totalReviewCount, long totalReviewRatingSum,
             double reviewRatingAverage, LocalDateTime deletedAt, boolean deleted
     ) {
         this.id = id;
         this.uuid = uuid;
         this.memberUuid = memberUuid;
         this.totalReviewCount = totalReviewCount;
-        this.totalReviewSum = totalReviewSum;
+        this.totalReviewRatingSum = totalReviewRatingSum;
         this.reviewRatingAverage = reviewRatingAverage;
         this.deletedAt = deletedAt;
         this.deleted = deleted;
@@ -67,15 +67,15 @@ public class MemberReview extends BaseEntity {
                 .uuid(uuid)
                 .memberUuid(memberUuid)
                 .totalReviewCount(0L)
-                .totalReviewSum(0L)
+                .totalReviewRatingSum(0L)
                 .reviewRatingAverage(0.0)
                 .deleted(false)
                 .build();
     }
 
-    public void updateReviewStats(Long totalReviewCount, Long totalReviewSum, double reviewRatingAverage) {
+    public void updateReviewStats(Long totalReviewCount, Long totalReviewRatingSum, double reviewRatingAverage) {
         this.totalReviewCount = totalReviewCount;
-        this.totalReviewSum = totalReviewSum;
+        this.totalReviewRatingSum = totalReviewRatingSum;
         this.reviewRatingAverage = reviewRatingAverage;
     }
 }

@@ -33,7 +33,7 @@ public class MemberReviewServiceImpl implements MemberReviewService {
                     .orElseGet(() -> MemberReview.of(uuidGenerator.generate(), memberUuid));
 
             long newCount = memberReview.getTotalReviewCount() + 1;
-            long newSum = memberReview.getTotalReviewSum() + ratingAsInt;
+            long newSum = memberReview.getTotalReviewRatingSum() + ratingAsInt;
             double newAvg = (newSum / (double) newCount) / 10.0;
 
             memberReview.updateReviewStats(newCount, newSum, newAvg);
