@@ -107,7 +107,7 @@ public enum ErrorCode {
     FAILED_TO_UPDATE_REVIEW_IMAGES(HttpStatus.INTERNAL_SERVER_ERROR, false, 6004, "리뷰 이미지 수정에 실패하였습니다."),
     FAILED_TO_DELETE_REVIEW(HttpStatus.INTERNAL_SERVER_ERROR, false, 6005, "리뷰 삭제에 실패하였습니다."),
     REVIEW_LOOKUP_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, false, 6006, "리뷰 단건 조회에 실패하였습니다."),
-    ;
+    FAILED_TO_AGGREGATE_REVIEW(HttpStatus.INTERNAL_SERVER_ERROR, false, 6007, "리뷰 집계에 실패하였습니다.");
 
     private final HttpStatus httpStatus;
     private final boolean isSuccess;
