@@ -5,6 +5,7 @@ import com.unionclass.reviewservice.common.response.ResponseMessage;
 import com.unionclass.reviewservice.domain.memberreview.application.MemberReviewService;
 import com.unionclass.reviewservice.domain.memberreview.vo.out.GetMemberReviewRatingAvgResVo;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/member-review")
+@Tag(name = "member-review")
 public class MemberReviewController {
 
     private final MemberReviewService memberReviewService;

@@ -13,7 +13,8 @@ import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
         tags = {
-                @Tag(name = "review", description = "리뷰 관련 API 입니다.")
+                @Tag(name = "review", description = "리뷰 관련 API 입니다."),
+                @Tag(name = "member-review", description = "회원에 대한 리뷰 집계 관련 API 입니다.")
         }
 )
 @Configuration
