@@ -4,6 +4,7 @@ import com.unionclass.reviewservice.common.exception.BaseException;
 import com.unionclass.reviewservice.common.exception.ErrorCode;
 import com.unionclass.reviewservice.common.kafka.event.ReviewCreatedEvent;
 import com.unionclass.reviewservice.common.util.NumericUuidGenerator;
+import com.unionclass.reviewservice.domain.memberreview.dto.out.GetMemberReviewRatingAvgResDto;
 import com.unionclass.reviewservice.domain.memberreview.entity.MemberReview;
 import com.unionclass.reviewservice.domain.memberreview.infrastructure.MemberReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -50,5 +51,14 @@ public class MemberReviewServiceImpl implements MemberReviewService {
             throw new BaseException(ErrorCode.FAILED_TO_AGGREGATE_REVIEW);
 
         }
+    }
+
+    @Override
+    public GetMemberReviewRatingAvgResDto getMemberReviewRatingAvg(String memberUuid) {
+
+        return GetMemberReviewRatingAvgResDto
+                .from(Math.round(memberReviewRepository.findByMemberUuid(memberUuid)
+                .orElseThrow(() -> new BaseException(ErrorCode.FAILED_TO_FIND_MEMBER_REVIEW))
+                .getReviewRatingAverage() * 10) / 10.0);
     }
 }
