@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface MemberReviewRepository extends JpaRepository<MemberReview, Long> {
 
-    Optional<MemberReview> findByUuid(String memberUuid);
+    Optional<MemberReview> findByMemberUuid(String memberUuid);
 }

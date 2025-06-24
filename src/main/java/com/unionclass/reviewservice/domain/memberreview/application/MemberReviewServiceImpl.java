@@ -29,7 +29,7 @@ public class MemberReviewServiceImpl implements MemberReviewService {
             String memberUuid = event.getRevieweeUuid();
             int ratingAsInt = (int) (event.getRating() * 10);
 
-            MemberReview memberReview = memberReviewRepository.findByUuid(memberUuid)
+            MemberReview memberReview = memberReviewRepository.findByMemberUuid(memberUuid)
                     .orElseGet(() -> MemberReview.of(uuidGenerator.generate(), memberUuid));
 
             long newCount = memberReview.getTotalReviewCount() + 1;
