@@ -12,9 +12,9 @@ public abstract class BaseDocument {
 
     @CreatedDate
     @Field("created_at")
-    private LocalDateTime createdAt;
+    public LocalDateTime createdAt;
 
     @LastModifiedDate
     @Field("updated_at")
-    private LocalDateTime updatedAt;
+    public LocalDateTime updatedAt;
 }
