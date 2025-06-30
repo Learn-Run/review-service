@@ -62,4 +62,6 @@ public class MemberReviewController {
                 memberReviewService.getMemberReviewRatingAvg(memberUuid).toVo()
         );
     }
+
+
 }

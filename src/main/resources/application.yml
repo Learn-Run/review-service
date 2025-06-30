@@ -38,6 +38,7 @@ spring:
       buffer-memory: 33554432
     topics:
       review-created: review-created
+      member-created: member-created
 
 logging:
   level:

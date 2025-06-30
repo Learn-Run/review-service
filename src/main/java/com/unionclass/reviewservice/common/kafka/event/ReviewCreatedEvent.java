@@ -1,7 +1,6 @@
 package com.unionclass.reviewservice.common.kafka.event;
 
 import com.unionclass.reviewservice.domain.review.entity.Review;
-import com.unionclass.reviewservice.domain.review.enums.Rating;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

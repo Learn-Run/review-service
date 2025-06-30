@@ -1,5 +1,6 @@
 package com.unionclass.reviewservice.common.kafka.util;
 
+import com.unionclass.reviewservice.common.kafka.event.MemberCreatedEvent;
 import com.unionclass.reviewservice.common.kafka.event.ReviewCreatedEvent;
 import com.unionclass.reviewservice.domain.memberreview.application.MemberReviewService;
 import lombok.RequiredArgsConstructor;
@@ -28,5 +29,20 @@ public class KafkaConsumer {
         log.info("리뷰 생성 이벤트 수신 - topic: {}, partition: {}, offset: {}",
                 consumerRecord.topic(), consumerRecord.partition(), consumerRecord.offset());
         memberReviewService.aggregateMemberReview(reviewCreatedEvent);
+    }
+
+    @KafkaListener(
+            topics = "member-created",
+            groupId = "review-aggregate-group",
+            containerFactory = "memberCreatedEventListener"
+    )
+    public void consumeReviewEvent(
+            MemberCreatedEvent memberCreatedEvent,
+            ConsumerRecord<String, MemberCreatedEvent> consumerRecord
+    ) {
+        log.info("회원 생성 이벤트 수신 완료: {}", memberCreatedEvent);
+        log.info("회원 생성 이벤트 수신 - topic: {}, partition: {}, offset: {}",
+                consumerRecord.topic(), consumerRecord.partition(), consumerRecord.offset());
+        memberReviewService.initializeMemberReview(memberCreatedEvent);
     }
 }

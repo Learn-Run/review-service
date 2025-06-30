@@ -2,6 +2,7 @@ package com.unionclass.reviewservice.domain.memberreview.application;
 
 import com.unionclass.reviewservice.common.exception.BaseException;
 import com.unionclass.reviewservice.common.exception.ErrorCode;
+import com.unionclass.reviewservice.common.kafka.event.MemberCreatedEvent;
 import com.unionclass.reviewservice.common.kafka.event.ReviewCreatedEvent;
 import com.unionclass.reviewservice.common.util.NumericUuidGenerator;
 import com.unionclass.reviewservice.domain.memberreview.dto.out.GetMemberReviewRatingAvgResDto;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberReviewServiceImpl implements MemberReviewService {
 
     private final MemberReviewRepository memberReviewRepository;
+
     private final NumericUuidGenerator uuidGenerator;
 
     @Transactional
@@ -31,7 +33,7 @@ public class MemberReviewServiceImpl implements MemberReviewService {
             int ratingAsInt = (int) (event.getRating() * 10);
 
             MemberReview memberReview = memberReviewRepository.findByMemberUuid(memberUuid)
-                    .orElseGet(() -> MemberReview.of(uuidGenerator.generate(), memberUuid));
+                    .orElseThrow(() -> new BaseException(ErrorCode.FAILED_TO_FIND_MEMBER_REVIEW));
 
             long newCount = memberReview.getTotalReviewCount() + 1;
             long newSum = memberReview.getTotalReviewRatingSum() + ratingAsInt;
@@ -60,5 +62,23 @@ public class MemberReviewServiceImpl implements MemberReviewService {
                 .from(Math.round(memberReviewRepository.findByMemberUuid(memberUuid)
                 .orElseThrow(() -> new BaseException(ErrorCode.FAILED_TO_FIND_MEMBER_REVIEW))
                 .getReviewRatingAverage() * 10) / 10.0);
+    }
+
+    @Transactional
+    @Override
+    public void initializeMemberReview(MemberCreatedEvent event) {
+
+        try {
+
+            memberReviewRepository.save(event.toEntity(uuidGenerator.generate()));
+
+            log.info("회원 리뷰 초기화 성공 - memberUuid: {}", event.getMemberUuid());
+
+        } catch (Exception e) {
+
+            log.warn("회원 리뷰 초기화 실패 - memberUuid: {}, message: {}", event.getMemberUuid(), e.getMessage(), e);
+
+            throw new BaseException(ErrorCode.FAILED_TO_INITIALIZE_MEMBER_REVIEW);
+        }
     }
 }
