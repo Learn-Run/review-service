@@ -33,10 +33,10 @@ public class KafkaConsumer {
 
     @KafkaListener(
             topics = "member-created",
-            groupId = "review-aggregate-group",
+            groupId = "member-aggregate-group",
             containerFactory = "memberCreatedEventListener"
     )
-    public void consumeReviewEvent(
+    public void consumeMemberEvent(
             MemberCreatedEvent memberCreatedEvent,
             ConsumerRecord<String, MemberCreatedEvent> consumerRecord
     ) {
